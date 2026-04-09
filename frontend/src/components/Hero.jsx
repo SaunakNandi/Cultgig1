@@ -1,4 +1,4 @@
-/* Hero section - Full viewport hero with 3D background and content overlay */
+/* Hero section - Full viewport, CENTER-ALIGNED on all screen sizes */
 import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import HeroScene from './HeroScene';
@@ -13,25 +13,25 @@ export default function Hero() {
     <section
       id="hero"
       data-testid="hero-section"
-      className="relative h-screen w-full flex items-center overflow-hidden"
+      className="relative h-screen w-full flex items-center justify-center overflow-hidden"
     >
       {/* 3D Background Canvas */}
       <HeroScene />
 
       {/* Subtle radial glow behind content */}
       <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/2 left-1/4 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#EAFF00] opacity-[0.04] rounded-full blur-[120px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#EAFF00] opacity-[0.04] rounded-full blur-[120px]" />
       </div>
 
-      {/* Content Overlay */}
-      <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-12 pointer-events-none">
-        <div className="max-w-2xl">
+      {/* Content Overlay — strictly center-aligned */}
+      <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-12 pointer-events-none text-center">
+        <div className="max-w-2xl mx-auto">
           {/* Pill label */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-block mb-6"
+            className="mb-6"
           >
             <span
               data-testid="hero-pill-label"
@@ -60,18 +60,18 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
-            className="text-lg text-[#a0a0a0] font-['Satoshi'] leading-relaxed mb-10 max-w-lg"
+            className="text-lg text-[#a0a0a0] font-['Satoshi'] leading-relaxed mb-10 max-w-[600px] mx-auto"
           >
             CultGig connects artists, creators, and freelancers with businesses
             and venues that need their talent.
           </motion.p>
 
-          {/* CTA Buttons */}
+          {/* CTA Buttons — centered row */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.8 }}
-            className="flex flex-col sm:flex-row gap-4 pointer-events-auto mb-10"
+            className="flex flex-col sm:flex-row justify-center gap-4 pointer-events-auto mb-10"
           >
             <button
               data-testid="hero-cta-download"
@@ -102,7 +102,7 @@ export default function Hero() {
         </div>
       </div>
 
-      {/* Scroll Down Arrow */}
+      {/* Scroll Down Arrow — centered at bottom */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

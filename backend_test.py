@@ -113,6 +113,7 @@ class CultGigAPITester:
         artist_data = {
             "name": f"Test Artist {test_timestamp}",
             "email": f"artist{test_timestamp}@test.com",
+            "whatsapp": f"+91 9876543{test_timestamp[-3:]}",
             "role": "artist"
         }
         
@@ -120,7 +121,7 @@ class CultGigAPITester:
             "Add Artist to Waitlist",
             "POST",
             "api/waitlist",
-            200,
+            201,
             data=artist_data
         )
         
@@ -130,7 +131,8 @@ class CultGigAPITester:
         # Test adding to waitlist - Business
         business_data = {
             "name": f"Test Business {test_timestamp}",
-            "email": f"business{test_timestamp}@test.com", 
+            "email": f"business{test_timestamp}@test.com",
+            "whatsapp": f"+1 555123{test_timestamp[-4:]}",
             "role": "business"
         }
         
@@ -138,7 +140,7 @@ class CultGigAPITester:
             "Add Business to Waitlist",
             "POST",
             "api/waitlist",
-            200,
+            201,
             data=business_data
         )
 
@@ -148,19 +150,52 @@ class CultGigAPITester:
         print("TESTING ERROR HANDLING")
         print("="*50)
         
-        # Test invalid waitlist data
-        invalid_data = {
-            "name": "",
-            "email": "invalid-email",
-            "role": "invalid-role"
+        # Test missing fields (should return 400)
+        missing_fields_data = {
+            "name": "Test User",
+            "email": "test@example.com"
+            # Missing whatsapp and role
         }
         
         self.run_test(
-            "Invalid Waitlist Data",
+            "Missing Required Fields",
             "POST",
             "api/waitlist",
-            422,  # Validation error expected
-            data=invalid_data
+            400,
+            data=missing_fields_data
+        )
+        
+        # Test duplicate email (should return 409)
+        # Using john@cultgig.com which exists in DB according to context
+        duplicate_data = {
+            "name": "John Duplicate",
+            "email": "john@cultgig.com",
+            "whatsapp": "+91 9876543210",
+            "role": "artist"
+        }
+        
+        self.run_test(
+            "Duplicate Email",
+            "POST",
+            "api/waitlist",
+            409,
+            data=duplicate_data
+        )
+        
+        # Test invalid email format
+        invalid_email_data = {
+            "name": "Test User",
+            "email": "invalid-email",
+            "whatsapp": "+91 9876543210",
+            "role": "artist"
+        }
+        
+        self.run_test(
+            "Invalid Email Format",
+            "POST",
+            "api/waitlist",
+            400,  # Should validate email format
+            data=invalid_email_data
         )
 
     def print_summary(self):

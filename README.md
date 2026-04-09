@@ -4,26 +4,15 @@ A modern, single-page responsive 3D landing page for **CultGig** — a talent ma
 
 ---
 
-## Overview
-
-CultGig connects musicians, photographers, comedians, and creators with restaurants, cafés, hotels, and event organizers. This landing page is designed to:
-
-1. **Drive app downloads** (iOS + Android)
-2. **Capture waitlist signups**
-3. **Build brand awareness**
-4. **Look modern, clean, premium, and trustworthy**
-
----
-
 ## Tech Stack
 
 | Layer       | Technology                                                  |
 | ----------- | ----------------------------------------------------------- |
 | Frontend    | React 19, Tailwind CSS 3, Framer Motion, Shadcn/UI         |
-| 3D Graphics | Three.js (vanilla) with Bloom post-processing               |
-| Backend     | FastAPI (Python), Motor (async MongoDB driver)              |
+| 3D Graphics | Three.js (vanilla) with UnrealBloom post-processing         |
+| Backend     | **Node.js + Express.js + Mongoose**                         |
 | Database    | MongoDB                                                     |
-| Deployment  | Emergent Platform (supervisor-managed)                      |
+| Proxy       | FastAPI (thin proxy layer, infrastructure requirement)      |
 
 ---
 
@@ -32,116 +21,113 @@ CultGig connects musicians, photographers, comedians, and creators with restaura
 ```
 /app/
 ├── backend/
-│   ├── server.py              # FastAPI application with waitlist API
-│   ├── requirements.txt       # Python dependencies
-│   └── .env                   # Backend environment variables
+│   ├── server/                    # Node.js Express backend
+│   │   ├── models/
+│   │   │   └── Waitlist.js        # Mongoose schema (name, email, whatsapp, role)
+│   │   ├── routes/
+│   │   │   └── waitlist.js        # POST/GET /api/waitlist routes
+│   │   ├── server.js              # Express app entry point (port 5000)
+│   │   ├── package.json           # Node.js dependencies
+│   │   └── .env                   # MONGO_URI, PORT
+│   ├── server.py                  # FastAPI proxy (routes to Node.js)
+│   ├── requirements.txt           # Python proxy dependencies
+│   └── .env                       # Platform env vars
 ├── frontend/
 │   ├── src/
-│   │   ├── App.js             # Main app component (composes all sections)
-│   │   ├── App.css            # Custom animations (glow, bounce, timeline)
-│   │   ├── index.css          # Global styles, fonts, Tailwind config
-│   │   ├── index.js           # React entry point
+│   │   ├── App.js                 # Main app (composes all sections)
+│   │   ├── App.css                # Custom animations
+│   │   ├── index.css              # Global styles, fonts, Tailwind
 │   │   └── components/
-│   │       ├── Navbar.jsx         # Sticky nav with blur + mobile hamburger
+│   │       ├── Navbar.jsx         # Sticky nav + mobile hamburger
 │   │       ├── HeroScene.jsx      # Vanilla Three.js 3D canvas + Bloom
-│   │       ├── Hero.jsx           # Hero content overlay (headline, CTAs)
-│   │       ├── Features.jsx       # 2-column feature cards (Artists/Venues)
-│   │       ├── HowItWorks.jsx     # Tabbed 3-step timeline (Shadcn Tabs)
-│   │       ├── AppDownload.jsx    # App store CTAs + phone mockup
-│   │       ├── WaitlistSignup.jsx # Waitlist form with success state
-│   │       ├── Footer.jsx         # Footer with links + social icons
+│   │       ├── Hero.jsx           # Hero content (center-aligned)
+│   │       ├── Features.jsx       # 2-column feature cards
+│   │       ├── HowItWorks.jsx     # Tabbed 3-step timeline
+│   │       ├── AppDownload.jsx    # Phone mockup + store buttons
+│   │       ├── WaitlistSignup.jsx # Form with WhatsApp + API integration
+│   │       ├── Footer.jsx         # Footer with social links
 │   │       └── ui/                # Shadcn/UI components
 │   ├── package.json
-│   ├── tailwind.config.js
-│   └── .env                   # Frontend environment variables
-├── memory/
-│   └── PRD.md                 # Product Requirements Document
-└── README.md                  # This file
+│   └── .env
+└── README.md
+```
+
+---
+
+## Running the Project
+
+### Backend (Node.js)
+```bash
+cd /app/backend/server
+npm install
+npm run dev
+```
+The Node.js server starts on **port 5000** with Express + Mongoose.
+
+### Frontend (React)
+```bash
+cd /app/frontend
+yarn install
+yarn start
+```
+The React dev server starts on **port 3000**.
+
+---
+
+## API Endpoints
+
+| Method | Endpoint              | Description                         |
+| ------ | --------------------- | ----------------------------------- |
+| GET    | `/api/`               | Health check                        |
+| GET    | `/api/health`         | Detailed health check               |
+| POST   | `/api/waitlist`       | Join waitlist (name, email, whatsapp, role) |
+| GET    | `/api/waitlist`       | List all waitlist entries            |
+| GET    | `/api/waitlist/count` | Get total waitlist count             |
+
+### POST /api/waitlist
+
+**Request:**
+```json
+{
+  "name": "John Doe",
+  "email": "john@example.com",
+  "whatsapp": "+919876543210",
+  "role": "artist"
+}
+```
+
+**Responses:**
+- `201` — `{ "success": true, "message": "You're on the waitlist!" }`
+- `400` — `{ "success": false, "message": "All fields are required" }`
+- `409` — `{ "success": false, "message": "Email already registered" }`
+- `500` — `{ "success": false, "message": "Server error. Try again." }`
+
+---
+
+## Environment Variables
+
+### Backend Node.js (`/app/backend/server/.env`)
+```
+MONGO_URI=mongodb://localhost:27017/cultgigDB
+PORT=5000
+```
+
+### Frontend (`/app/frontend/.env`)
+```
+REACT_APP_BACKEND_URL=<preview-url>
 ```
 
 ---
 
 ## Design System
 
-| Element       | Value                                          |
-| ------------- | ---------------------------------------------- |
-| Brand Name    | CultGig                                         |
-| Primary Accent| `#EAFF00` (electric yellow-green)               |
-| Background    | `#000000` to `#0a0a0a`                          |
-| Surfaces      | `#111111` / `#1a1a1a`                           |
-| Headline Text | `#FFFFFF`                                       |
-| Body Text     | `#a0a0a0`                                       |
-| Heading Font  | Syne (Google Fonts)                             |
-| Body Font     | Satoshi (Fontshare)                             |
-| UI Style      | Glassmorphism, neon glow, dark mode             |
-
----
-
-## Page Sections
-
-1. **Navbar** — Sticky, transparent with backdrop blur. CultGig text logo with accent on "Gig". Mobile hamburger menu.
-2. **Hero** — Full viewport with animated 3D canvas background (microphone, camera, musical notes, sound rings, particle field with Bloom). Headline: "Book. Perform. Get Discovered."
-3. **Features** — 2-column layout: "For Artists & Creators" and "For Businesses & Venues" with glassmorphism cards.
-4. **How It Works** — Tabbed 3-step horizontal timeline using Shadcn Tabs.
-5. **App Download** — Split layout with phone mockup and App Store/Google Play buttons.
-6. **Waitlist Signup** — Name, email, role select form with success animation state.
-7. **Footer** — Logo, quick links, social icons, copyright.
-
----
-
-## 3D Hero Scene
-
-The hero background uses **vanilla Three.js** (not R3F) with:
-- Wireframe glowing microphone, camera, musical notes, sound wave rings
-- Instanced particle field (180 particles) for constellation effect
-- UnrealBloom post-processing for cinematic neon glow
-- Mouse-reactive camera parallax
-
----
-
-## API Endpoints
-
-| Method | Endpoint            | Description                  |
-| ------ | ------------------- | ---------------------------- |
-| GET    | `/api/`             | Health check                 |
-| GET    | `/api/health`       | Detailed health check        |
-| POST   | `/api/waitlist`     | Join the waitlist            |
-| GET    | `/api/waitlist`     | Get all waitlist entries      |
-| GET    | `/api/waitlist/count` | Get waitlist signup count  |
-
----
-
-## Environment Variables
-
-### Backend (`/app/backend/.env`)
-```
-MONGO_URL=mongodb://localhost:27017
-DB_NAME=test_database
-CORS_ORIGINS=*
-```
-
-### Frontend (`/app/frontend/.env`)
-```
-REACT_APP_BACKEND_URL=<your-preview-url>
-WDS_SOCKET_PORT=443
-ENABLE_HEALTH_CHECK=false
-```
-
----
-
-## Local Development
-
-```bash
-# Backend
-cd /app/backend
-pip install -r requirements.txt
-uvicorn server:app --host 0.0.0.0 --port 8001
-
-# Frontend
-cd /app/frontend
-yarn install
-yarn start
-```
+| Element        | Value                              |
+| -------------- | ---------------------------------- |
+| Primary Accent | `#EAFF00` (electric yellow-green)  |
+| Background     | `#000000` to `#0a0a0a`            |
+| Surfaces       | `#111111` / `#1a1a1a`             |
+| Heading Font   | Syne                               |
+| Body Font      | Satoshi                            |
 
 ---
 
