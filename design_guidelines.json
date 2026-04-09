@@ -1,0 +1,162 @@
+{
+  "project_name": "CultGig Landing Page",
+  "theme": "dark",
+  "archetype": "7 (Electric & Neon)",
+  "vibe": "High-energy, modern, disruptive, creative, premium neon",
+  "design_system": {
+    "colors": {
+      "background": {
+        "primary": "#000000",
+        "secondary": "#0a0a0a"
+      },
+      "surface": {
+        "primary": "#111111",
+        "secondary": "#1a1a1a",
+        "glass": "rgba(17, 17, 17, 0.7)"
+      },
+      "brand": {
+        "primary": "#EAFF00",
+        "primary_glow": "rgba(234, 255, 0, 0.5)",
+        "primary_dim": "rgba(234, 255, 0, 0.1)"
+      },
+      "text": {
+        "headline": "#FFFFFF",
+        "body": "#a0a0a0",
+        "muted": "#666666"
+      },
+      "border": {
+        "default": "rgba(255, 255, 255, 0.1)",
+        "hover": "rgba(234, 255, 0, 0.5)"
+      }
+    },
+    "typography": {
+      "rules": "H1/H2 must have tracking-tighter. Use Syne for all headings (hero, sections, cards). Use Satoshi for body text.",
+      "fonts": {
+        "heading": "'Syne', sans-serif",
+        "body": "'Satoshi', sans-serif"
+      },
+      "scales": {
+        "h1": "text-5xl md:text-6xl lg:text-7xl tracking-tighter font-black",
+        "h2": "text-3xl md:text-5xl tracking-tight font-bold",
+        "h3": "text-2xl md:text-3xl font-bold",
+        "h4": "text-xl font-semibold",
+        "body_lg": "text-lg leading-relaxed",
+        "body": "text-base leading-relaxed",
+        "small": "text-sm uppercase tracking-widest"
+      }
+    },
+    "surfaces": {
+      "glass_card": "bg-[#111111]/80 backdrop-blur-xl border border-white/10 rounded-xl shadow-lg transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_-5px_rgba(234,255,0,0.3)] hover:border-[#EAFF00]/50",
+      "solid_card": "bg-[#1a1a1a] border border-white/5 rounded-xl transition-all duration-300",
+      "button_primary": "bg-[#EAFF00] text-black font-bold rounded-lg px-8 py-4 shadow-[0_0_20px_rgba(234,255,0,0.4)] hover:shadow-[0_0_40px_rgba(234,255,0,0.6)] hover:bg-[#d4e600] transition-all duration-300",
+      "button_outline": "bg-transparent text-white border border-white/20 rounded-lg px-8 py-4 hover:border-[#EAFF00] hover:text-[#EAFF00] transition-all duration-300",
+      "input_field": "bg-[#111111] border border-white/20 rounded-lg focus:border-[#EAFF00] focus:ring-1 focus:ring-[#EAFF00] text-white placeholder-gray-500"
+    },
+    "layout": {
+      "container": "max-w-7xl mx-auto px-6 md:px-12",
+      "section_spacing": "py-24 md:py-32",
+      "bento_grid": "grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8"
+    }
+  },
+  "sections": [
+    {
+      "name": "Navbar",
+      "type": "fixed_header",
+      "styles": "fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/60 border-b border-white/10 h-20 flex items-center",
+      "components": ["Logo", "NavLinks", "PrimaryCTA"],
+      "instructions": "Logo should be text 'Cult' in white and 'Gig' in #EAFF00 using Syne font. Add a smooth fade-in animation on load. Use framer-motion."
+    },
+    {
+      "name": "Hero",
+      "type": "3d_canvas_hero",
+      "styles": "relative h-screen w-full flex items-center justify-center overflow-hidden pt-20",
+      "components": ["R3F Canvas", "Hero Content Overlay"],
+      "instructions": "Place the R3F Canvas as an absolute background (z-0). The foreground content (z-10) should have pointer-events-none on the wrapper, but pointer-events-auto on buttons. Headline: 'Where Talent Meets the Stage'. Subhead: 'The ultimate marketplace for artists, creators, and venues.' Buttons: 'Join Waitlist' (primary). 3D instructions: Use @react-three/fiber, @react-three/drei (Float, Environment, Sparkles) and @react-three/postprocessing (Bloom). Add floating abstract objects (spheres/icosahedrons) with emissive #EAFF00 materials to simulate mics/cameras if complex models aren't available, or use Text3D with music notes '♪'. Enable Bloom for cinematic glow."
+    },
+    {
+      "name": "Features",
+      "type": "bento_grid",
+      "styles": "relative bg-black z-10",
+      "components": ["Section Header", "Feature Cards (Artists vs Venues)"],
+      "instructions": "Create a 2-column or asymmetric bento layout. Use 'glass_card' surface style. Include images for artists and venues with an overlay to match the dark neon aesthetic. Use framer-motion whileInView to stagger fade-up."
+    },
+    {
+      "name": "How It Works",
+      "type": "tabbed_timeline",
+      "styles": "relative bg-[#0a0a0a] z-10",
+      "components": ["Section Header", "Shadcn Tabs (Customized)"],
+      "instructions": "Use custom Shadcn Tabs for the 3-step timeline (e.g., 1. Create Profile, 2. Book Gigs, 3. Get Paid). Style the active tab trigger with text-[#EAFF00] and an animated bottom border or glowing background. Content area should have rich typography and subtle icon/image."
+    },
+    {
+      "name": "App Download",
+      "type": "split_content",
+      "styles": "relative bg-black z-10 overflow-hidden",
+      "components": ["Text Column", "Image Column (Phone Mockup)"],
+      "instructions": "Left: Pitch for the mobile app, App Store & Google Play placeholder buttons (styled outline/glass). Right: Large floating phone mockup image. Add a glowing radial gradient blob in the background behind the phone."
+    },
+    {
+      "name": "Waitlist Signup",
+      "type": "form_section",
+      "styles": "relative bg-[#0a0a0a] z-10 py-32 border-t border-white/5",
+      "components": ["Glass Form Container", "Input", "Submit Button", "Success State"],
+      "instructions": "Frontend-only form. Use Shadcn Input/Button. Upon submit, hide form and show a stylized success message with a glowing checkmark icon. Center the form in a narrow max-w-md container."
+    },
+    {
+      "name": "Footer",
+      "type": "simple_footer",
+      "styles": "bg-black border-t border-white/10 py-12",
+      "components": ["Large Brand Text", "Social Links", "Copyright"],
+      "instructions": "Keep it clean. 'CultGig' in massive text (text-4xl or 5xl) with 'Gig' colored #EAFF00. Opacity 50% for standard links."
+    }
+  ],
+  "media": {
+    "images": [
+      {
+        "category": "artists_feature",
+        "url": "https://images.unsplash.com/photo-1660323148750-8367b4f4b949?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjAzMzN8MHwxfHNlYXJjaHwxfHxsaXZlJTIwY29uY2VydCUyMG5lb258ZW58MHx8fHwxNzc1NzUyODcxfDA&ixlib=rb-4.1.0&q=85",
+        "description": "Guitar player on neon stage. Use for 'For Artists' feature card."
+      },
+      {
+        "category": "venues_feature",
+        "url": "https://images.unsplash.com/photo-1760276148663-b685f223aab9?crop=entropy&cs=srgb&fm=jpg&ixid=M3w4NjA1ODh8MHwxfHNlYXJjaHwyfHxyZXN0YXVyYW50JTIwY2FmZSUyMHZlbnVlfGVufDB8fHx8MTc3NTc1Mjg1OXww&ixlib=rb-4.1.0&q=85",
+        "description": "Illuminated dark venue. Use for 'For Venues' feature card."
+      },
+      {
+        "category": "app_mockup",
+        "url": "https://images.unsplash.com/photo-1557774058-c9148bc6e481?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTY2OTF8MHwxfHNlYXJjaHwxfHxzbWFydHBob25lJTIwbW9ja3VwJTIwZGFya3xlbnwwfHx8fDE3NzU3NTI4NzF8MA&ixlib=rb-4.1.0&q=85",
+        "description": "Dark smartphone mockup. Place in the App Download section."
+      }
+    ],
+    "icons_library": "lucide-react"
+  },
+  "technical_requirements": {
+    "dependencies_to_install": [
+      "framer-motion",
+      "three",
+      "@react-three/fiber",
+      "@react-three/drei",
+      "@react-three/postprocessing",
+      "lucide-react",
+      "clsx",
+      "tailwind-merge"
+    ],
+    "fonts_setup": [
+      "@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&display=swap');",
+      "@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,301,701,300,501,401,901,400&display=swap');"
+    ],
+    "shadcn_components_needed": [
+      "tabs",
+      "input",
+      "button"
+    ],
+    "data_testid_rules": "All interactive elements (buttons, inputs, tabs, form submissions) MUST have a data-testid attribute formatted as kebab-case, describing its role."
+  },
+  "e1_design_principles": [
+    "No generic 'Bootstrap' columns. Use asymmetry where possible.",
+    "Max overlay opacity bg-black/50 for images, prefer gradient overlays for text contrast.",
+    "Do not use Syne for body copy, do not use Satoshi for main headlines.",
+    "Always explicitly set text color on hover.",
+    "Generous spacing: use py-24 or py-32 between major sections.",
+    "3D Canvas MUST have Bloom postprocessing applied to #EAFF00 emissive materials to sell the neon look."
+  ]
+}
