@@ -18,7 +18,7 @@ load_dotenv(ROOT_DIR / '.env')
 app = FastAPI(title="CultGig Proxy", version="1.0.0")
 api_router = APIRouter(prefix="/api")
 
-NODE_BACKEND = "http://localhost:5000"
+NODE_BACKEND = os.getenv("NODE_BACKEND", "http://localhost:5000")
 
 # ─── Proxy helper ──────────────────────────────────────────────
 async def proxy_to_node(method: str, path: str, body: dict = None):
