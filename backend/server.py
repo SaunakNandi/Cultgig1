@@ -20,6 +20,10 @@ api_router = APIRouter(prefix="/api")
 
 NODE_BACKEND = os.getenv("NODE_BACKEND", "http://localhost:5000")
 
+@app.get("/")
+@app.head("/")
+async def render_root():
+    return {"status": "alive"}
 # ─── Proxy helper ──────────────────────────────────────────────
 async def proxy_to_node(method: str, path: str, body: dict = None):
     """Forward request to Node.js backend"""
