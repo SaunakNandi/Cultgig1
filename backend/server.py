@@ -29,7 +29,7 @@ async def proxy_to_node(method: str, path: str, body: dict = None):
     """Forward request to Node.js backend"""
     url = f"{NODE_BACKEND}{path}"
     try:
-        async with httpx.AsyncClient(timeout=10.0) as client:
+        async with httpx.AsyncClient(timeout=60.0) as client:
             if method == "GET":
                 resp = await client.get(url)
             elif method == "POST":
@@ -71,8 +71,8 @@ app.include_router(api_router)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
-    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_origins=["*"], 
+    allow_credentials=False, # This MUST be False if origins is "*"
     allow_methods=["*"],
     allow_headers=["*"],
 )
